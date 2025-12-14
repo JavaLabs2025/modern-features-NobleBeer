@@ -9,12 +9,16 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.lab.user.model.UserEntity;
 
 import java.time.Instant;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "project")
 public class ProjectEntity {
     @Id

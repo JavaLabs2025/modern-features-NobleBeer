@@ -6,6 +6,7 @@ import org.lab.bugreport.controller.dto.BugReportRequestDto;
 import org.lab.bugreport.controller.dto.BugReportResponseDto;
 import org.lab.bugreport.service.BugReportRequestHandler;
 import org.lab.common.dto.ApiResponse;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,11 +26,18 @@ public class BugReportController {
 
     private final BugReportRequestHandler bugReportRequestHandler;
 
-    @GetMapping("/bugs/assigned-bug-reports")
+    // посмотреть список отчетов об ошибках, которые ему надо исправить - all users
+    @GetMapping("/assigned-bug-reports")
     public ApiResponse<List<BugReportResponseDto>> getAssignedBugReports() {
         return ApiResponse.success(bugReportRequestHandler.getCurrentBugReports());
     }
 
+    // Создание сообщений об ошибках - тестировщик, разработчик
+    @PreAuthorize("""
+        hasAuthority('PROJECT:' + #projectName + ':DEVELOPER') 
+        or 
+        hasAuthority('PROJECT:' + #projectName + ':TESTER')
+    """)
     @PostMapping("/projects/{projectName}/bugs")
     public ApiResponse<BugReportResponseDto> createBugReport(
             @PathVariable String projectName,
@@ -37,6 +45,8 @@ public class BugReportController {
         return ApiResponse.success(bugReportRequestHandler.createBugReport(projectName, requestDto));
     }
 
+    // Исправление сообщений об ошибках - разработчик
+    @PreAuthorize("hasAuthority('PROJECT:' + #projectName + ':DEVELOPER')")
     @PutMapping("/projects/{projectName}/bugs/{bugId}/fix")
     public void fixBug(
             @PathVariable String projectName,
@@ -44,6 +54,8 @@ public class BugReportController {
         bugReportRequestHandler.fixBug(bugId);
     }
 
+    // Тестирование проекта - тестировщик
+    @PreAuthorize("hasAuthority('PROJECT:' + #projectName + ':TESTER')")
     @PutMapping("/projects/{projectName}/{bugId}/verify")
     public void verifyBugFix(
             @PathVariable String projectName,
@@ -52,19 +64,12 @@ public class BugReportController {
         bugReportRequestHandler.verifyBugFix(bugId);
     }
 
+    // Проверка исправления сообщений об ошибках - тестировщик
+    @PreAuthorize("hasAuthority('PROJECT:' + #projectName + ':TESTER')")
     @PutMapping("/projects/{projectName}/{bugId}/close")
     public void closeBug(
             @PathVariable String projectName,
             @PathVariable Long bugId) {
         bugReportRequestHandler.closeBug(bugId);
     }
-    // посмотреть список отчетов об ошибках, которые ему надо исправить - all users
-
-    // Создание сообщений об ошибках - тестировщик, разработчик
-
-    // Исправление сообщений об ошибках - разработчик
-
-    // Тестирование проекта - тестировщик
-
-    // Проверка исправления сообщений об ошибках - тестировщик
 }

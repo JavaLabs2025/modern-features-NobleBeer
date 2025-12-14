@@ -2,6 +2,8 @@ package org.lab.milestone.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.lab.milestone.controller.dto.ChangeMilestoneStatusRequestDto;
+import org.lab.milestone.service.MilestoneRequestHandler;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,13 +26,13 @@ public class MilestoneController {
             @PathVariable String projectName,
             @PathVariable String milestoneName,
             @Valid @RequestBody ChangeMilestoneStatusRequestDto requestDto) {
-        milestoneRequestHandler.changeStatus(projectName, milestoneName, requestDto);
+        milestoneRequestHandler.changeStatus(milestoneName, requestDto);
     }
 
     @PostMapping("/create")
     public void createMilestone(
             @PathVariable String projectName,
             @Valid @RequestBody CreateNewMilestoneRequestDto requestDto) {
-        milestoneRequestHandler.createNewMilestone(projectName, requestDto);
+        milestoneRequestHandler.createNewMilestone(requestDto);
     }
 }

@@ -2,9 +2,8 @@ package org.lab.user.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.itmo.hrtek.dlms.storage.postgres.PostgresStorageException;
-import org.itmo.hrtek.dlms.storage.postgres.model.User;
-import org.itmo.hrtek.dlms.storage.postgres.repository.UserRepository;
+import org.lab.user.model.UserEntity;
+import org.lab.user.persistence.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -14,8 +13,8 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public void save(User user) throws PostgresStorageException {
-        userRepository.create(user);
+    public void save(UserEntity user) {
+        userRepository.save(user);
         log.info("Создан пользователь с именем {}", user.getUsername());
     }
 }

@@ -3,6 +3,7 @@ package org.lab.security.config;
 import org.lab.infrastructure.filter.JwtAuthFilter;
 import org.lab.security.exception.handling.DefaultAccessDeniedHandler;
 import org.lab.security.service.CustomLogoutHandler;
+import org.lab.security.service.ProjectAuthorizationManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,7 @@ public class WebSecurityConfiguration {
     private final JwtAuthFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
     private final CustomLogoutHandler logoutHandler;
+    private final ProjectAuthorizationManager projectAuthorizationManager;
 
     private static final String[] WHITE_LIST_URL_PATTERNS = {
             "/auth/**",
@@ -39,8 +41,8 @@ public class WebSecurityConfiguration {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(customizer -> customizer
                         .requestMatchers(WHITE_LIST_URL_PATTERNS).permitAll()
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/hr/**").hasRole("HR")
+                        .requestMatchers("/projects/**")
+                            .access(projectAuthorizationManager)
                         .anyRequest().authenticated())
                 .sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(customizer -> customizer

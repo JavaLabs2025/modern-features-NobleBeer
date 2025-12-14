@@ -22,7 +22,7 @@ public class ProjectController {
     private final ProjectRequestHandler projectRequestHandler;
 
     @GetMapping
-    public ApiResponse<ProjectResponseDto> getMyProjects() {
+    public ApiResponse<ProjectResponseDto> getProjects() {
         return ApiResponse.success(projectRequestHandler.getMyProjects());
     }
 
