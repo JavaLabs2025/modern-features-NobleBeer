@@ -28,11 +28,13 @@ public class MilestoneController {
             @Valid @RequestBody ChangeMilestoneStatusRequestDto requestDto) {
         milestoneRequestHandler.changeStatus(milestoneName, requestDto);
     }
-
+/*
     @PostMapping("/create")
     public void createMilestone(
             @PathVariable String projectName,
             @Valid @RequestBody CreateNewMilestoneRequestDto requestDto) {
         milestoneRequestHandler.createNewMilestone(requestDto);
     }
+
+ */
 }

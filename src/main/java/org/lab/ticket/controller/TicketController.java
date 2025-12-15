@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/projects/{projectName}/{milestoneName}/tickets")
 @RequiredArgsConstructor
 public class TicketController {
-
+/*
     private final TicketRequestHandler ticketRequestHandler;
 
     @GetMapping("/my")
@@ -76,4 +76,6 @@ public class TicketController {
     // проверка выполнения тикета - менеджер проекта, тимлидер
 
     // выполнение тикетов - тимлидер, разработчик
+
+ */
 }

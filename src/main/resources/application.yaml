@@ -3,3 +3,23 @@ security:
     secret_key: ${JWT_TOKEN_SECRET_KEY}
     access_token_expiration_ms: ${JWT_ACCESS_TOKEN_EXPIRATION_MS}
     refresh_token_expiration_ms: ${JWT_REFRESH_TOKEN_EXPIRATION_MS}
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        default_schema: test
+  datasource:
+    url: jdbc
+    username: user
+    password: password
+    hikari:
+      data-source-properties:
+        socketTimeout: 1
+  application:
+    name: lab-4
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true

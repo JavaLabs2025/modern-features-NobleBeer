@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/projects")
 @RequiredArgsConstructor
 public class ProjectController {
-
+/*
     private final ProjectRequestHandler projectRequestHandler;
 
     @GetMapping
@@ -59,4 +59,6 @@ public class ProjectController {
 
     //добавление тестировщика к проекту - менеджер проекта
 
+
+ */
 }

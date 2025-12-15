@@ -56,7 +56,7 @@ public class BugReportController {
 
     // Тестирование проекта - тестировщик
     @PreAuthorize("hasAuthority('PROJECT:' + #projectName + ':TESTER')")
-    @PutMapping("/projects/{projectName}/{bugId}/verify")
+    @PutMapping("/projects/{projectName}/bugs/{bugId}/verify")
     public void verifyBugFix(
             @PathVariable String projectName,
             @PathVariable Long bugId
@@ -66,7 +66,7 @@ public class BugReportController {
 
     // Проверка исправления сообщений об ошибках - тестировщик
     @PreAuthorize("hasAuthority('PROJECT:' + #projectName + ':TESTER')")
-    @PutMapping("/projects/{projectName}/{bugId}/close")
+    @PutMapping("/projects/{projectName}/bugs/{bugId}/close")
     public void closeBug(
             @PathVariable String projectName,
             @PathVariable Long bugId) {

@@ -1,6 +1,7 @@
 package org.lab.security.service;
 
 import org.lab.security.model.CustomUserDetails;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.authorization.AuthorizationManager;
 import org.springframework.security.core.Authentication;
@@ -17,7 +18,7 @@ public class ProjectAuthorizationManager implements AuthorizationManager<Request
             Pattern.compile("^/projects/([^/]+)/.*");
 
     @Override
-    public AuthorizationDecision check(Supplier<Authentication> authentication, RequestAuthorizationContext context) {
+    public AuthorizationDecision authorize(Supplier<Authentication> authentication, RequestAuthorizationContext context) {
         var request = context.getRequest();
         var matcher = PROJECT_PATTERN.matcher(request.getRequestURI());
 
@@ -35,5 +36,19 @@ public class ProjectAuthorizationManager implements AuthorizationManager<Request
         return new AuthorizationDecision(
                 user.hasProjectAccess(projectName)
         );
+    }
+
+    @Override
+    @Deprecated
+    public AuthorizationDecision check(
+            Supplier<Authentication> authentication,
+            RequestAuthorizationContext context
+    ) {
+        try {
+            authorize(authentication, context);
+            return new AuthorizationDecision(true);
+        } catch (AccessDeniedException ex) {
+            return new AuthorizationDecision(false);
+        }
     }
 }
